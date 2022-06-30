@@ -1,5 +1,5 @@
 import "regenerator-runtime/runtime";
-import React from "react";
+import React, { useEffect } from "react";
 
 import "./assets/css/global.css";
 
@@ -23,10 +23,11 @@ export default function App() {
 
   // The useEffect hook can be used to fire side-effects during render
   // Learn more: https://reactjs.org/docs/hooks-intro.html
-  React.useEffect(
+  useEffect(
     () => {
       // get_greeting is in near/utils.js
       get_greeting().then((greetingFromContract) => {
+        console.log(greetingFromContract);
         setGreeting(greetingFromContract);
       });
     },
