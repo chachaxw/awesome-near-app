@@ -21,22 +21,13 @@ export default function App() {
   // after submitting the form, we want to show Notification
   const [showNotification, setShowNotification] = React.useState(false);
 
-  // The useEffect hook can be used to fire side-effects during render
-  // Learn more: https://reactjs.org/docs/hooks-intro.html
-  useEffect(
-    () => {
-      // get_greeting is in near/utils.js
-      get_greeting().then((greetingFromContract) => {
-        console.log(greetingFromContract);
-        setGreeting(greetingFromContract);
-      });
-    },
-
-    // The second argument to useEffect tells React when to re-run the effect
-    // Use an empty array to specify "only run on first render"
-    // This works because signing into NEAR Wallet reloads the page
-    []
-  );
+  useEffect(() => {
+    // get_greeting is in near/utils.js
+    get_greeting().then((greetingFromContract) => {
+      console.log(greetingFromContract);
+      setGreeting(greetingFromContract);
+    });
+  }, []);
 
   // if not signed in, return early with sign-in prompt
   if (!window.walletConnection.isSignedIn()) {
@@ -79,18 +70,16 @@ export default function App() {
       </button>
       <main>
         <h1>
-          <label
-            htmlFor="greeting"
-            style={{
-              color: "var(--secondary)",
-              borderBottom: "2px solid var(--secondary)",
-            }}
-          >
-            {greeting}
-          </label>
-          {
-            " " /* React trims whitespace around tags; insert literal space character when needed */
-          }
+          {greeting && (
+            <p
+              style={{
+                color: "var(--secondary)",
+                borderBottom: "2px solid var(--secondary)",
+              }}
+            >
+              {greeting}
+            </p>
+          )}
           {window.accountId}!
         </h1>
         <form
