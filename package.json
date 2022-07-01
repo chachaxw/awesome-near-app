@@ -1,10 +1,10 @@
 {
-  "name": "greeter",
+  "name": "awesome-near-app",
   "version": "1.0.0",
   "license": "(MIT AND Apache-2.0)",
   "scripts": {
     "build": "npm run build:contract && npm run build:web",
-    "build:contract": "cd contract && rustup target add wasm32-unknown-unknown && cargo build --all --target wasm32-unknown-unknown --release && cp ./target/wasm32-unknown-unknown/release/greeter.wasm ../out/main.wasm",
+    "build:contract": "cd contract && rustup target add wasm32-unknown-unknown && cargo build --all --target wasm32-unknown-unknown --release && cp ./target/wasm32-unknown-unknown/release/fungible_token.wasm ../out/main.wasm",
     "build:web": "parcel build frontend/index.html --public-url ./",
     "deploy": "npm run build:contract && near dev-deploy",
     "start": "npm run deploy && echo The app is starting! It will automatically open in your browser when ready && env-cmd -f ./neardev/dev-account.env parcel frontend/index.html --open",
@@ -31,6 +31,10 @@
     "typescript": "^4.7.2"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.2.1",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "framer-motion": "^6",
     "near-api-js": "~0.44.2",
     "react": "~18.1.0",
     "react-dom": "~18.1.0",
