@@ -1,8 +1,8 @@
 [package]
-name = "greeter"
+name = "fungible-token"
 version = "1.0.0"
-authors = ["Near Inc <hello@near.org>"]
-edition = "2021"
+authors = ["Chacha <chachazw@gmail.com>"]
+edition = "2022"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
@@ -10,6 +10,7 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 near-sdk = "4.0.0"
 uint = { version = "0.9.3", default-features = false }
+near-contract-standards = "4.0.0"
 
 [profile.release]
 codegen-units = 1
