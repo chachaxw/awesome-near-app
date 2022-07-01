@@ -1,64 +1,46 @@
 import "regenerator-runtime/runtime";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Button, Container, Heading, Text } from "@chakra-ui/react";
 
 import "./assets/css/global.css";
 
-import {
-  login,
-  logout,
-  get_greeting,
-  set_greeting,
-} from "./assets/js/near/utils";
+import { login, logout, getCount } from "./assets/js/near/utils";
 import getConfig from "./assets/js/near/config";
 
 export default function App() {
   // use React Hooks to store greeting in component state
-  const [greeting, setGreeting] = React.useState();
+  const [greeting, setGreeting] = useState();
 
   // when the user has not yet interacted with the form, disable the button
-  const [buttonDisabled, setButtonDisabled] = React.useState(true);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   // after submitting the form, we want to show Notification
-  const [showNotification, setShowNotification] = React.useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     // get_greeting is in near/utils.js
-    get_greeting().then((greetingFromContract) => {
-      console.log(greetingFromContract);
-      setGreeting(greetingFromContract);
+    getCount().then((countFromContract) => {
+      console.log("返回数据", countFromContract);
+      setGreeting(countFromContract);
     });
   }, []);
 
   // if not signed in, return early with sign-in prompt
   if (!window.walletConnection.isSignedIn()) {
     return (
-      <main>
-        <h1>
-          <label
-            htmlFor="greeting"
-            style={{
-              color: "var(--secondary)",
-              borderBottom: "2px solid var(--secondary)",
-            }}
-          >
-            {greeting}
-          </label>
-          ! Welcome to NEAR!
-        </h1>
-        <p>
+      <Container w="full" maxW="container.lg" centerContent>
+        <Heading>Welcome to NEAR!</Heading>
+        <Text align="center">
           Your contract is storing a greeting message in the NEAR blockchain. To
           change it you need to sign in using the NEAR Wallet. It is very
-          simple, just use the button below.
-        </p>
-        <p>
-          Do not worry, this app runs in the test network ("testnet"). It works
-          just like the main network ("mainnet"), but using NEAR Tokens that are
-          only for testing!
-        </p>
-        <p style={{ textAlign: "center", marginTop: "2.5em" }}>
-          <button onClick={login}>Sign in</button>
-        </p>
-      </main>
+          simple, just use the button below.Do not worry, this app runs in the
+          test network ("testnet"). It works just like the main network
+          ("mainnet"), but using NEAR Tokens that are only for testing!
+        </Text>
+        <div style={{ textAlign: "center", marginTop: "2.5em" }}>
+          <Button onClick={login}>Connect with Near</Button>
+        </div>
+      </Container>
     );
   }
 
@@ -68,7 +50,7 @@ export default function App() {
       <button className="link" style={{ float: "right" }} onClick={logout}>
         Sign out
       </button>
-      <main>
+      <Container>
         <h1>
           {greeting && (
             <p
@@ -82,76 +64,6 @@ export default function App() {
           )}
           {window.accountId}!
         </h1>
-        <form
-          onSubmit={async (event) => {
-            event.preventDefault();
-
-            // get elements from the form using their id attribute
-            const { fieldset, greeting } = event.target.elements;
-
-            // hold onto new user-entered value from React's SynthenticEvent for use after `await` call
-            const newGreeting = greeting.value;
-
-            // disable the form while the value gets updated on-chain
-            fieldset.disabled = true;
-
-            try {
-              // make an update call to the smart contract
-              // pass the value that the user entered in the greeting field
-              await set_greeting(newGreeting);
-            } catch (e) {
-              alert(
-                "Something went wrong! " +
-                  "Maybe you need to sign out and back in? " +
-                  "Check your browser console for more info."
-              );
-              throw e;
-            } finally {
-              // re-enable the form, whether the call succeeded or failed
-              fieldset.disabled = false;
-            }
-
-            // update local `greeting` variable to match persisted value
-            setGreeting(newGreeting);
-
-            // show Notification
-            setShowNotification(true);
-
-            // remove Notification again after css animation completes
-            // this allows it to be shown again next time the form is submitted
-            setTimeout(() => {
-              setShowNotification(false);
-            }, 11000);
-          }}
-        >
-          <fieldset id="fieldset">
-            <label
-              htmlFor="greeting"
-              style={{
-                display: "block",
-                color: "var(--gray)",
-                marginBottom: "0.5em",
-              }}
-            >
-              Change greeting
-            </label>
-            <div style={{ display: "flex" }}>
-              <input
-                autoComplete="off"
-                defaultValue={greeting}
-                id="greeting"
-                onChange={(e) => setButtonDisabled(e.target.value === greeting)}
-                style={{ flex: 1 }}
-              />
-              <button
-                disabled={buttonDisabled}
-                style={{ borderRadius: "0 5px 5px 0" }}
-              >
-                Save
-              </button>
-            </div>
-          </fieldset>
-        </form>
         <p>
           Look at that! A Hello World app! This greeting is stored on the NEAR
           blockchain. Check it out:
@@ -194,7 +106,7 @@ export default function App() {
           </a>
           .
         </p>
-      </main>
+      </Container>
       {showNotification && <Notification />}
     </>
   );
