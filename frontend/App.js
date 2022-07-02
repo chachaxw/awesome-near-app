@@ -14,23 +14,12 @@ import {
 
 import "./assets/css/global.css";
 
-import { login, logout, getMetadata } from "./assets/js/near/utils";
+import { login, logout } from "./assets/js/near/utils";
 import getConfig from "./assets/js/near/config";
 
 export default function App() {
-  // use React Hooks to store greeting in component state
-  const [metadata, setMetadata] = useState();
-
   // after submitting the form, we want to show Notification
   const [showNotification, setShowNotification] = useState(false);
-
-  useEffect(() => {
-    // getMetadata is in near/utils.js
-    getMetadata().then((metadata) => {
-      console.log("返回数据", metadata);
-      setMetadata(metadata);
-    });
-  }, []);
 
   // if not signed in, return early with sign-in prompt
   if (!window.walletConnection.isSignedIn()) {
@@ -75,7 +64,7 @@ export default function App() {
         <OrderedList spacing={3} style={{ paddingTop: 16, paddingBottom: 16 }}>
           <ListItem>
             Look in <Code>src/App.js</Code> and <Code>src/utils.js</Code> –
-            you'll see <Code>get_metadata</Code> and being called on{" "}
+            you'll see <Code>ft_metadata</Code> and being called on{" "}
             <Code>contract</Code>. What's this?
           </ListItem>
           <ListItem>

@@ -2,7 +2,7 @@
  * @Author: Chacha
  * @Date: 2022-07-01 14:26:50
  * @Last Modified by: Chacha
- * @Last Modified time: 2022-07-02 11:35:18
+ * @Last Modified time: 2022-07-02 21:01:54
  */
 /*!
 Fungible Token implementation with JSON serialization.
@@ -40,6 +40,13 @@ pub struct Contract {
     token: FungibleToken,
     metadata: LazyOption<FungibleTokenMetadata>,
 }
+
+// Define the default, which automatically initializes the contract
+// impl Default for Contract {
+//     fn default() -> Self {
+//         Self::new_default_meta(env::current_account_id(), TOTAL_SUPPLY.into())
+//     }
+// }
 
 // Implement the contract structure
 #[near_bindgen]
@@ -92,10 +99,6 @@ impl Contract {
     fn on_tokens_burned(&mut self, account_id: AccountId, amount: Balance) {
         log!("Account @{} burned {}", account_id, amount);
     }
-
-    pub fn get_metadata(&self) -> Option<FungibleTokenMetadata> {
-        self.metadata.get()
-    }
 }
 
 near_contract_standards::impl_fungible_token_core!(Contract, token, on_tokens_burned);
@@ -132,12 +135,12 @@ mod tests {
 
     #[test]
     fn test_new() {
-        let mut context = get_context(accounts(0));
+        let mut context = get_context(accounts(1));
         testing_env!(context.build());
-        let contract = Contract::new_default_meta(accounts(0), TOTAL_SUPPLY.into());
+        let contract = Contract::new_default_meta(accounts(1).into(), TOTAL_SUPPLY.into());
         testing_env!(context.is_view(true).build());
         assert_eq!(contract.ft_total_supply().0, TOTAL_SUPPLY);
-        assert_eq!(contract.ft_balance_of(accounts(0)).0, TOTAL_SUPPLY);
+        assert_eq!(contract.ft_balance_of(accounts(1)).0, TOTAL_SUPPLY);
     }
 
     #[test]

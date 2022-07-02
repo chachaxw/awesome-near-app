@@ -26,7 +26,7 @@ export async function initContract() {
     nearConfig.contractName,
     {
       // View methods are read only. They don't modify the state, but usually return some value.
-      viewMethods: ["get_metadata"],
+      viewMethods: ["ft_metadata"],
       // Change methods can modify the state. But you don't receive the returned value when called.
       changeMethods: [],
     }
@@ -49,6 +49,6 @@ export function login() {
 
 export async function getMetadata() {
   console.log(window.contract);
-  // let metadata = await window.contract.get_metadata();
-  return {};
+  let metadata = await window.contract.ft_metadata();
+  return metadata;
 }
