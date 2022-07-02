@@ -2,7 +2,7 @@
  * @Author: Chacha
  * @Date: 2022-07-01 14:26:50
  * @Last Modified by: Chacha
- * @Last Modified time: 2022-07-01 23:07:50
+ * @Last Modified time: 2022-07-02 11:35:18
  */
 /*!
 Fungible Token implementation with JSON serialization.
@@ -37,7 +37,6 @@ const DATA_IMAGE_SVG_NEAR_ICON: &str = "data:image/svg+xml,%3Csvg xmlns='http://
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize, PanicOnDefault)]
 pub struct Contract {
-    value: u64,
     token: FungibleToken,
     metadata: LazyOption<FungibleTokenMetadata>,
 }
@@ -72,7 +71,6 @@ impl Contract {
         metadata.assert_valid();
 
         let mut this = Self {
-            value: 0,
             token: FungibleToken::new(b"a".to_vec()),
             metadata: LazyOption::new(b"m".to_vec(), Some(&metadata)),
         };
@@ -97,14 +95,6 @@ impl Contract {
 
     pub fn get_metadata(&self) -> Option<FungibleTokenMetadata> {
         self.metadata.get()
-    }
-
-    pub fn increment(&mut self) {
-        self.value += 1;
-    }
-
-    pub fn get_count(&self) -> u64 {
-        self.value
     }
 }
 

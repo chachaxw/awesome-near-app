@@ -6,7 +6,7 @@ import App from "./App";
 import { initContract } from "./assets/js/near/utils";
 
 const container = document.querySelector("#root");
-const root = createRoot(container); // createRoot(container!) if you use TypeScript
+const root = createRoot(container);
 
 window.nearInitPromise = initContract()
   .then(() => {

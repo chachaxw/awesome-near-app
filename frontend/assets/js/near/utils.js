@@ -21,14 +21,14 @@ export async function initContract() {
   window.accountId = window.walletConnection.getAccountId();
 
   // Initializing our contract APIs by contract name and configuration
-  window.contract = await new Contract(
+  window.contract = new Contract(
     window.walletConnection.account(),
     nearConfig.contractName,
     {
       // View methods are read only. They don't modify the state, but usually return some value.
-      viewMethods: ["get_count"],
+      viewMethods: ["get_metadata"],
       // Change methods can modify the state. But you don't receive the returned value when called.
-      changeMethods: ["increment"],
+      changeMethods: [],
     }
   );
 }
@@ -47,17 +47,8 @@ export function login() {
   window.walletConnection.requestSignIn(nearConfig.contractName);
 }
 
-export async function increment() {
-  let response = await window.contract.increment();
-  return response;
-}
-
-export async function getCount() {
-  let count = await window.contract.get_count();
-  return count;
-}
-
 export async function getMetadata() {
-  let metadata = await window.contract.get_metadata();
-  return metadata;
+  console.log(window.contract);
+  // let metadata = await window.contract.get_metadata();
+  return {};
 }
