@@ -6,6 +6,32 @@ A [smart contract] written in [Rust] for an app initialized with [create-near-ap
 
 Before you compile this code, you will need to install Rust with [correct target]
 
+## Skeleton and Rust Architecture
+
+```rust
+contract
+├── Cargo.lock
+├── Cargo.toml
+├── README.md
+├── build.sh
+└── src
+    ├── approval.rs
+    ├── enumeration.rs
+    ├── lib.rs
+    ├── metadata.rs
+    ├── mint.rs
+    ├── nft_core.rs
+    └── royalty.rs
+```
+
+`approval.rs` - Has the functions that controls the access and transfers of non-fungible tokens.
+`enumeration.rs` - Contains the methods to list NFT tokens and their owners.
+`lib.rs` - Holds the smart contract initialization functions.
+`metadata.rs` - Defines the token and metadata structure.
+`mint.rs` - Contains token minting logic.
+`nft_core.rs` - Core logic that allows you to transfer NFTs between users.
+`royalty.rs` - Contains payout-related functions.
+
 ## Exploring The Code
 
 1. The main smart contract code lives in `src/lib.rs`.

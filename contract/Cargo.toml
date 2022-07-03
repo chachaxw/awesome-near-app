@@ -1,5 +1,5 @@
 [package]
-name = "fungible-token"
+name = "chacha-nft"
 version = "1.0.0"
 authors = ["Chacha <chachazw@gmail.com>"]
 edition = "2021"
