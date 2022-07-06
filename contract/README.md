@@ -32,10 +32,22 @@ contract
 `nft_core.rs` - Core logic that allows you to transfer NFTs between users.
 `royalty.rs` - Contains payout-related functions.
 
+### approval.rs
+
+### enumeration.rs
+
+### lib.rs
+
+### metadata.rs
+
+### nft_core.rs
+
+### royalty.rs
+
 ## Exploring The Code
 
-1. The main smart contract code lives in `src/lib.rs`.
-2. Tests: You can run smart contract tests with the `./test` script. This runs
+1. The main smart contract code lives in `contract/src/lib.rs`.
+2. Tests: You can run smart contract tests with the `contract/src/tests` script. This runs
    standard Rust tests using [cargo] with a `--nocapture` flag so that you
    can see any debug info you print to the console.
 

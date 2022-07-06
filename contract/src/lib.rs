@@ -2,7 +2,7 @@
  * @Author: Chacha
  * @Date: 2022-07-01 14:26:50
  * @Last Modified by: Chacha
- * @Last Modified time: 2022-07-02 21:01:54
+ * @Last Modified time: 2022-07-05 14:09:05
  */
 /*!
 Fungible Token implementation with JSON serialization.
@@ -26,11 +26,14 @@ use near_contract_standards::non_fungible_token::metadata::{NFTContractMetadata,
 use near_contract_standards::non_fungible_token::{Token, TokenId};
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::{LazyOption, LookupMap, UnorderedMap, UnorderedSet};
+use near_sdk::json_types::{Base64VecU8, U128};
 use near_sdk::{near_bindgen, AccountId, CryptoHash, PanicOnDefault};
 
 pub use crate::approval::*;
+pub use crate::enumeration::*;
 
 mod approval;
+mod enumeration;
 
 /// This spec can be treated like a version of the standard.
 pub const NFT_METADATA_SPEC: &str = "nft-1.0.0";
