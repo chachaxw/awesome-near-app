@@ -23,7 +23,7 @@ pub trait NonFungibleTokenCore {
     fn nft_revoke_all(&mut self, token_id: TokenId);
 }
 
-#[ext_contract(ext_non_fungible_token_approval_receiver)]
+#[ext_contract(ext_non_fungible_approval_receiver)]
 trait NonFungibleTokenApprovalReceiver {
     // cross contract call to an external contract that is initiated during nft_approve
     fn nft_on_approve(
@@ -74,8 +74,9 @@ impl NonFungibleTokenCore for Contract {
 
         // increment the token's next approval ID by 1
         token.next_approval_id += 1;
+
         // insert the token back into the tokens_by_id collection
-        token.tokens_by_id.insert(&token_id, &token);
+        self.tokens_by_id.insert(&token_id, &token);
 
         // refund any excess storage attached by the user. If the user didn't attach enough, panic.
         refund_deposit(storage_used);
