@@ -1,5 +1,4 @@
 use crate::*;
-use near_contract_standards::non_fungible_token::refund_approved_account_ids;
 use near_sdk::{ext_contract, Gas, PromiseResult};
 
 const GAS_FOR_RESOLVE_TRANSFER: Gas = Gas(10_000_000_000_000);
@@ -112,8 +111,13 @@ impl NonFungibleTokenCore for Contract {
         let sender_id = env::predecessor_account_id();
 
         // transfer the token and get the previous token object
-        let previous_token =
-            self.internal_transfer(&sender_id, &receiver_id, &token_id, approval_id, memo);
+        let previous_token = self.internal_transfer(
+            &sender_id,
+            &receiver_id,
+            &token_id,
+            approval_id,
+            memo.clone(),
+        );
 
         // default the authorized_id to none
         let mut authorized_id = None;

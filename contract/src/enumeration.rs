@@ -1,4 +1,4 @@
-use crate::*;
+use crate::{nft_core::NonFungibleTokenCore, *};
 
 #[near_bindgen]
 impl Contract {
