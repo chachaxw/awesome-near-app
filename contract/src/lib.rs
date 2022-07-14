@@ -15,11 +15,13 @@ use near_sdk::{
 };
 use std::collections::HashMap;
 
+use crate::internal::*;
+
 pub use crate::approval::*;
 pub use crate::enumeration::*;
 pub use crate::events::*;
-use crate::internal::*;
 pub use crate::metadata::*;
+pub use crate::mint::*;
 pub use crate::nft_core::*;
 pub use crate::royalty::*;
 
@@ -28,6 +30,7 @@ mod enumeration;
 mod events;
 mod internal;
 mod metadata;
+mod mint;
 mod nft_core;
 mod royalty;
 
