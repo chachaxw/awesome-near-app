@@ -48,6 +48,40 @@ This file contains the logic that complies with the standard's [approvals manage
 | **nft_revoke_all**  | Revokes all accounts from transferring the token on your behalf.                                          |
 | **nft_on_approve**  | This callback function, initiated during `nft_approve`, is a cross contract call to an external contract. |
 
+```rust
+// src/approval.rs
+pub trait NonFungibleTokenCore {
+    //approve an account ID to transfer a token on your behalf
+    fn nft_approve(&mut self, token_id: TokenId, account_id: AccountId, msg: Option<String>);
+
+    //check if the passed in account has access to approve the token ID
+	fn nft_is_approved(
+        &self,
+        token_id: TokenId,
+        approved_account_id: AccountId,
+        approval_id: Option<u64>,
+    ) -> bool;
+
+    //revoke a specific account from transferring the token on your behalf
+    fn nft_revoke(&mut self, token_id: TokenId, account_id: AccountId);
+
+    //revoke all accounts from transferring the token on your behalf
+    fn nft_revoke_all(&mut self, token_id: TokenId);
+}
+
+#[ext_contract(ext_non_fungible_approval_receiver)]
+trait NonFungibleTokenApprovalsReceiver {
+    //cross contract call to an external contract that is initiated during nft_approve
+    fn nft_on_approve(
+        &mut self,
+        token_id: TokenId,
+        owner_id: AccountId,
+        approval_id: u64,
+        msg: String,
+    );
+}
+```
+
 ### `enumeration.rs`
 
 > This file provides the functions needed to view information about NFTs, and follows the standard's [enumeration](https://nomicon.io/Standards/NonFungibleToken/Enumeration.html) extension.
@@ -58,6 +92,51 @@ This file contains the logic that complies with the standard's [approvals manage
 | **nft_tokens**           | Returns a paginated list of NFTs stored on the contract regardless of their owner. |
 | **nft_supply_for_owner** | Allows you view the total number of NFTs owned by any given user.                  |
 | **nft_tokens_for_owner** | Returns a paginated list of NFTs owned by any given user.                          |
+
+```rust
+// src/enumeration.rs
+impl Contract {
+    //Query for the total supply of NFTs on the contract
+    pub fn nft_total_supply(&self) -> U128 {
+        /*
+            FILL THIS IN
+        */
+        todo!(); //remove once code is filled in.
+    }
+
+    //Query for nft tokens on the contract regardless of the owner using pagination
+    pub fn nft_tokens(&self, from_index: Option<U128>, limit: Option<u64>) -> Vec<JsonToken> {
+        /*
+            FILL THIS IN
+        */
+        todo!(); //remove once code is filled in.
+    }
+
+    //get the total supply of NFTs for a given owner
+    pub fn nft_supply_for_owner(
+        &self,
+        account_id: AccountId,
+    ) -> U128 {
+        /*
+            FILL THIS IN
+        */
+        todo!(); //remove once code is filled in.
+    }
+
+    //Query for all the tokens for an owner
+    pub fn nft_tokens_for_owner(
+        &self,
+        account_id: AccountId,
+        from_index: Option<U128>,
+        limit: Option<u64>,
+    ) -> Vec<JsonToken> {
+        /*
+            FILL THIS IN
+        */
+        todo!(); //remove once code is filled in.
+    }
+}
+```
 
 ### `lib.rs`
 
@@ -70,6 +149,37 @@ This file contains the logic that complies with the standard's [approvals manage
 
 > Keep in mind
 > The initialization functions (`new`, `new_default_meta`) can only be called once.
+
+```rust
+// src/lib.rs
+impl Contract {
+    /*
+        initialization function (can only be called once).
+        this initializes the contract with default metadata so the
+        user doesn't have to manually type metadata.
+    */
+    #[init]
+    pub fn new_default_meta(owner_id: AccountId) -> Self {
+        /*
+            FILL THIS IN
+        */
+        todo!(); //remove once code is filled in.
+    }
+
+    /*
+        initialization function (can only be called once).
+        this initializes the contract with metadata that was passed in and
+        the owner_id.
+    */
+    #[init]
+    pub fn new(owner_id: AccountId, metadata: NFTContractMetadata) -> Self {
+        /*
+            FILL THIS IN
+        */
+        todo!(); //remove once code is filled in.
+    }
+}
+```
 
 ### `metadata.rs`
 
