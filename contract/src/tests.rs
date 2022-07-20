@@ -145,6 +145,38 @@ fn test_internal_transfer() {
 }
 
 #[test]
+fn test_nft_approve() {
+    let mut context = get_context(accounts(0));
+    testing_env!(context.build());
+
+    let mut contract = Contract::new_default_meta(accounts(0).into());
+
+    testing_env!(context
+        .storage_usage(env::storage_usage())
+        .attached_deposit(MINT_STORAGE_COST)
+        .predecessor_account_id(accounts(0))
+        .build());
+
+    let token_id = "0".to_string();
+    contract.nft_mint(token_id.clone(), sample_token_metadata(), accounts(0), None);
+
+    testing_env!(context
+        .storage_usage(env::storage_usage())
+        .attached_deposit(MIN_REQUIRED_APPROVAL_YOCTO)
+        .predecessor_account_id(accounts(0))
+        .build());
+    contract.nft_approve(token_id.clone(), accounts(1), None);
+
+    testing_env!(context
+        .storage_usage(env::storage_usage())
+        .account_balance(env::account_balance())
+        .is_view(true)
+        .attached_deposit(0)
+        .build());
+    assert!(contract.nft_is_approved(token_id.clone(), accounts(1), None));
+}
+
+#[test]
 fn test_nft_revoke() {
     let mut context = get_context(accounts(0));
     testing_env!(context.build());
@@ -183,10 +215,9 @@ fn test_nft_revoke() {
 }
 
 #[test]
-fn test_nft_approve() {
+fn test_nft_revoke_all() {
     let mut context = get_context(accounts(0));
     testing_env!(context.build());
-
     let mut contract = Contract::new_default_meta(accounts(0).into());
 
     testing_env!(context
@@ -194,10 +225,10 @@ fn test_nft_approve() {
         .attached_deposit(MINT_STORAGE_COST)
         .predecessor_account_id(accounts(0))
         .build());
-
     let token_id = "0".to_string();
     contract.nft_mint(token_id.clone(), sample_token_metadata(), accounts(0), None);
 
+    // alice approves bob
     testing_env!(context
         .storage_usage(env::storage_usage())
         .attached_deposit(MIN_REQUIRED_APPROVAL_YOCTO)
@@ -205,13 +236,20 @@ fn test_nft_approve() {
         .build());
     contract.nft_approve(token_id.clone(), accounts(1), None);
 
+    // alice revokes bob
+    testing_env!(context
+        .storage_usage(env::storage_usage())
+        .attached_deposit(1)
+        .predecessor_account_id(accounts(0))
+        .build());
+    contract.nft_revoke_all(token_id.clone());
     testing_env!(context
         .storage_usage(env::storage_usage())
         .account_balance(env::account_balance())
         .is_view(true)
         .attached_deposit(0)
         .build());
-    assert!(contract.nft_is_approved(token_id.clone(), accounts(1), None));
+    assert!(!contract.nft_is_approved(token_id.clone(), accounts(1), Some(1)));
 }
 
 #[test]
