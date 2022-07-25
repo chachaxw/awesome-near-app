@@ -362,6 +362,10 @@ pub trait NonFungibleTokenCore {
 }
 ```
 
+## Deploy Contract
+
+`near deploy --accountId $NFT_CONTRACT_ID --wasmFile out/main.wasm`
+
 ## Exploring The Code
 
 1. The main smart contract code lives in `contract/src/lib.rs`.

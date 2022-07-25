@@ -2,7 +2,7 @@ use crate::*;
 use near_contract_standards::non_fungible_token::{
     bytes_for_approved_account_id, refund_approved_account_ids, refund_approved_account_ids_iter,
 };
-use near_sdk::{assert_one_yocto, env, ext_contract};
+use near_sdk::{env, ext_contract};
 
 pub trait NonFungibleTokenCore {
     // approve an account ID to transfer a token on your behalf
